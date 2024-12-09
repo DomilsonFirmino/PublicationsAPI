@@ -20,7 +20,7 @@ class PublicationFactory extends Factory
         return [
             'img'=>fake()->imageUrl(),
             'content'=>fake()->text(),
-            'user_id'=>User::factory()->create()
+            'user_id'=>User::class
         ];
     }
 }

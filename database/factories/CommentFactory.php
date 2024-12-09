@@ -18,15 +18,11 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        $user = User::factory()->create();
         return [
-            'content'=>fake()->text(),
             'score'=>fake()->randomDigitNotZero(),
-            'user_id'=> $user->id,
+            'user_id'=> User::class,
             'comment_id'=>null,
-            'publication_id'=>Publication::factory()->create([
-                'user_id'=>$user->id
-            ]),
+            'publication_id'=>Publication::class,
         ];
     }
 }
