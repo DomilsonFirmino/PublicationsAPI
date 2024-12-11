@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->text('content');
-            $table->integer('score');
+            $table->integer('score')->default(0);
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Comment::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Publication::class)->constrained()->cascadeOnDelete();

@@ -20,7 +20,14 @@ class PublicationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attr = $request->validate([
+            'title'=>'required|unique:publications,title',
+            'content'=>'required',
+        ]);
+        $attr['img']=null;
+        $user = $request->user();
+        $pub = $user->publications()->create($attr);
+        return ['publication'=>$pub,'user'=>$user];
     }
 
     /**

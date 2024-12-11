@@ -20,7 +20,20 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attr = $request->validate([
+            'content'=>'required',
+            'publication_id'=>'required|integer',
+        ]);
+
+        if($request->has('comment_id')){
+            $attr['comment_id']=$request->comment_id;
+        }else{
+            $attr['comment_id']=$request->comment_id;
+        }
+
+        $user = $request->user();
+        $comment = $user->comments()->create($attr);
+        return ['comment'=>$comment,'user'=>$user];
     }
 
     /**
@@ -36,6 +49,7 @@ class CommentController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
+
         //
     }
 

@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
 
         Publication::factory()->create([
             'id'=>'1',
+            'title'=>'First publication',
             'user_id' => User::factory()->create([
                 'username'=>'juliusomo'
             ])

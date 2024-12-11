@@ -16,7 +16,8 @@ return new class extends Migration
     {
         Schema::create('publications', function (Blueprint $table) {
             $table->id();
-            $table->string('img');
+            $table->string('title')->unique();
+            $table->string('img')->nullable();
             $table->text('content');
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->timestamps();

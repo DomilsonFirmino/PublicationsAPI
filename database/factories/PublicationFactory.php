@@ -19,6 +19,7 @@ class PublicationFactory extends Factory
     {
         return [
             'img'=>fake()->imageUrl(),
+            'title'=>fake()->title(),
             'content'=>fake()->text(),
             'user_id'=>User::class
         ];
