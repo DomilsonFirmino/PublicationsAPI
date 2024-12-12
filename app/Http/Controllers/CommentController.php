@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Publication;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -10,10 +11,10 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return ['comments'=>Comment::with('user')->get()];
-    }
+    // public function index()
+    // {
+    //     return ['comments'=>Comment::with(['user','comments'])->get()];
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -25,6 +26,10 @@ class CommentController extends Controller
             'publication_id'=>'required|integer',
         ]);
 
+        if(! Publication::find($request->publication_id)){
+            return ['message'=>'This publication does not exist'];
+        }
+
         if($request->has('comment_id')){
             $attr['comment_id']=$request->comment_id;
         }else{
@@ -33,7 +38,7 @@ class CommentController extends Controller
 
         $user = $request->user();
         $comment = $user->comments()->create($attr);
-        return ['comment'=>$comment,'user'=>$user];
+        return ['comment'=>$comment,'user'=>$user,'publication'=>Publication::find($request->publication_id)];
     }
 
     /**
@@ -41,6 +46,7 @@ class CommentController extends Controller
      */
     public function show(Comment $comment)
     {
+        $comment->load(['user','comments']);
         return ['comment'=>$comment];
     }
 
@@ -50,14 +56,27 @@ class CommentController extends Controller
     public function update(Request $request, Comment $comment)
     {
 
-        //
+        if($request->user()->id != $comment->user_id){
+            return ["message"=>"You are not autorized"];
+        }
+
+        $attr = $request->validate([
+            'content'=>'required'
+        ]);
+
+        $comment->update($attr);
+        return ['comment'=>$comment,'user'=>$request->user()];
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request,Comment $comment)
     {
-        //
+        if($request->user()->id != $comment->user_id){
+           return ["message"=>"You are not autorized"];
+        }
+        $comment->delete();
+        return ["message"=>"Comment deleted sucessfuly"];
     }
 }

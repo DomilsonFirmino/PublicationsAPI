@@ -14,10 +14,7 @@ class Publication extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
-    public function comment(){
-        return $this->belongsTo(Comment::class,'comment_id');
-    }
     public function comments(){
-        return $this->hasMany(Comment::class,'comment_id');
+        return $this->hasMany(Comment::class);
     }
 }
