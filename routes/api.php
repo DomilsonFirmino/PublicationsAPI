@@ -31,7 +31,7 @@ Route::patch('/publications/{publication}', [PublicationController::class,'updat
 Route::get('/comments/{comment}', [CommentController::class,'show']);
 
 
-Route::post('/comments', [CommentController::class,'store'])->middleware("auth:sanctum");
+Route::post('/comments', [CommentController::class,'store'])->middleware("auth:sanctum"); //api/publications/{publication_id}/comments
 Route::delete('/comments/{comment}', [CommentController::class,'destroy'])->middleware('auth:sanctum');
 Route::patch('/comments/{comment}', [CommentController::class,'update'])->middleware('auth:sanctum');
 
