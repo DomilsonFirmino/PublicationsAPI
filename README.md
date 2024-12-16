@@ -110,13 +110,27 @@ Here's a neatly styled section for your GitHub README:
 }
 ```
 
+### Users
+
+- **Users:** `GET /api/users`
+- - Return all users
+- **User** `GET /api/users/{id}`
+- - Return a single user 
+- **User and comments** `GET /api/users/{id}/comments`
+- - Return a single user with all is comments and pagination {?size={value}} to paginate 
+- **User and publications** `GET /api/users/{id}/publications`
+- - Return a single user with all is publications and pagination {?size={value}} to paginate
+
 ### Publication
 
 - **List Publications:** `GET /api/publications`
-- - Return all publications, with its users
+- - Return all publications, with its user
 
 - **Show Publication:** `GET /api/publications/{id}`
-- - Return a single publication, with its users and comments
+- - Return a single publication, with its user
+
+- **Show Publication and comments:** `GET /api/publications/{id}/comments`
+- - Return a single publication, with its users, comments and pagination {?size={value}} to paginate 
 
 - **Create a Publication:** `POST /api/publications`
 
@@ -184,7 +198,7 @@ Here's a neatly styled section for your GitHub README:
 ### comments
 
 - **Show Comment:** `GET /api/comments/{id}`
-- - Return a single commnet, with all its comments and user
+- - Return a single commnet, with all its comments, user and pagination {?size={value}} to paginate 
 
 - **Create comment:** `POST api/comments/`
 #### Autorization
@@ -250,13 +264,6 @@ Here's a neatly styled section for your GitHub README:
 }
 ```
 - - Return messague informing the sucess of the operation
-
-### Users
-
-- **Users:** `GET /api/users`
-- - Return all users
-- **User** `GET /api/users/{id}`
-- - Return a single user with all is comments
 
 ## License
 
