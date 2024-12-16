@@ -12,9 +12,16 @@ Route::get('/', function () {
 });
 
 Route::get('/users', function (Request $request){
+    $search = $request->search;
     $page_size = $request->size ?? 10;
-    $users = User::latest()->paginate($page_size);
-    return ['users'=> $users];
+    $users = User::query();
+    if($search != null){
+        $users->where( function ($query) use ($search) {
+            $query->orWhere('username','like',"%$search%")
+            ->orWhere('email','like',"%$search%");
+        });
+    }
+    return ['users'=> $users->latest()->paginate($page_size)];
 });
 
 Route::get('/users/{user}', function (User $user){

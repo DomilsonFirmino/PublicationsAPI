@@ -12,8 +12,16 @@ class PublicationController extends Controller
      */
     public function index(Request $request)
     {
+        $search = $request->search;
         $page_size = $request->size ?? 10;
-        return ['publications'=>Publication::with('user')->paginate($page_size)];
+        $publications = Publication::with('user');
+
+        if($search != null){
+            $publications->where( function ($query) use ($search) {
+                $query->orWhere('title','like',"%$search%");
+            });
+        }
+        return ['publications'=>$publications->paginate($page_size)];
     }
 
     /**
