@@ -4,23 +4,40 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PublicationController;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return "wroking fine";
+    return "working fine";
 });
 
-Route::get('/users', function (){
-    return ['users'=>User::query()->get()];
+Route::get('/users', function (Request $request){
+    $page_size = $request->size ?? 10;
+    $users = User::latest()->paginate($page_size);
+    return ['users'=> $users];
 });
 
 Route::get('/users/{user}', function (User $user){
-    $user->load('comments');
     return ['user'=>$user];
+});
+
+Route::get('/users/{user}/comments', function (User $user, Request $request){
+    // $comments = Comment::where('user_id','=',$user->id)->paginate(2);
+    $page_size = $request->size ?? 10;
+    $comments = $user->comments()->paginate($page_size);
+    return ['user'=>$user,'comments'=>$comments];
+});
+
+Route::get('/users/{user}/publications', function (User $user, Request $request){
+    $page_size = $request->size ?? 10;
+    $publications = $user->publications()->paginate($page_size);
+    $user->load('publications');
+    return ['user'=>$user, 'publications' =>$publications];
 });
 
 Route::get('/publications', [PublicationController::class,'index']);
 Route::get('/publications/{publication}', [PublicationController::class,'show']);
+Route::get('/publications/{publication}/comments', [PublicationController::class,'showComments']);
 
 
 Route::post('/publications', [PublicationController::class,'store'])->middleware("auth:sanctum");

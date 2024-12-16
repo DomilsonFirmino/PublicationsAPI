@@ -44,10 +44,12 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comment)
+    public function show(Comment $comment, Request $request)
     {
-        $comment->load(['user','comments']);
-        return ['comment'=>$comment];
+        $page_size = $request->size ?? 10;
+        $comment->load(['user']);
+        $comments = $comment->comments()->paginate($page_size);
+        return ['comment'=>$comment,$comments];
     }
 
     /**

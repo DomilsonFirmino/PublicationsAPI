@@ -10,9 +10,10 @@ class PublicationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return ['publications'=>Publication::with('user')->get()];
+        $page_size = $request->size ?? 10;
+        return ['publications'=>Publication::with('user')->paginate($page_size)];
     }
 
     /**
@@ -27,7 +28,7 @@ class PublicationController extends Controller
         $attr['img']=null;
         $user = $request->user();
         $pub = $user->publications()->create($attr);
-        return ['publication'=>$pub,'user'=>$user];
+        return ['publication'=>$pub];
     }
 
     /**
@@ -35,8 +36,16 @@ class PublicationController extends Controller
      */
     public function show(Publication $publication)
     {
-        $publication->load(['user','comments']);
+        $publication->load(['user']);
         return ['publication'=>$publication];
+    }
+
+    public function showComments(Publication $publication, Request $request)
+    {
+        $page_size = $request->size ?? 10;
+        $publication->load(['user']);
+        $comments = $publication->comments()->paginate($page_size);
+        return ['publication'=>$publication,'comments'=>$comments];
     }
 
     /**
