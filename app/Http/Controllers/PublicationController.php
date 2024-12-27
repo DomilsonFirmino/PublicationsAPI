@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\Publication;
 use Illuminate\Http\Request;
 
@@ -45,10 +46,16 @@ class PublicationController extends Controller
     public function show(string  $title,Request $request)
     {
         $formattedTitle = str_replace('_', ' ', $title);
+
         $publication = Publication::where('title', $formattedTitle)->firstOrFail();
+
         $publication->load(['user']);
+
         $page_size = $request->size ?? 10;
-        $comments = $publication->comments()->paginate($page_size);
+
+        $comments = Comment::where('publication_id',$publication->id)->whereNull('comment_id')->with('comments.comments.comments.comments.comments.comments.comments.comments.comments')->paginate($page_size);
+
+        //9 niveis de comentário
 
         return [
             'publication'=>$publication,
