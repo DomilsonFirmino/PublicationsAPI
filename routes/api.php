@@ -38,14 +38,11 @@ Route::get('/users/{user}/comments', function (User $user, Request $request){
 Route::get('/users/{user}/publications', function (User $user, Request $request){
     $page_size = $request->size ?? 10;
     $publications = $user->publications()->paginate($page_size);
-    $user->load('publications');
     return ['user'=>$user, 'publications' =>$publications];
 });
 
 Route::get('/publications', [PublicationController::class,'index']);
 Route::get('/publications/{publication}', [PublicationController::class,'show']);
-Route::get('/publications/{publication}/comments', [PublicationController::class,'showComments']);
-
 
 Route::post('/publications', [PublicationController::class,'store'])->middleware("auth:sanctum");
 Route::delete('/publications/{publication}', [PublicationController::class,'destroy'])->middleware("auth:sanctum");

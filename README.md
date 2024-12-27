@@ -127,10 +127,7 @@ Here's a neatly styled section for your GitHub README:
 - - Return all publications, with its user
 
 - **Show Publication:** `GET /api/publications/{id}`
-- - Return a single publication, with its user
-
-- **Show Publication and comments:** `GET /api/publications/{id}/comments`
-- - Return a single publication, with its users, comments and pagination {?size={value}} to paginate 
+- - Return a single publication, with its user, comments and pagination {?size={value}} to paginate 
 
 - **Create a Publication:** `POST /api/publications`
 

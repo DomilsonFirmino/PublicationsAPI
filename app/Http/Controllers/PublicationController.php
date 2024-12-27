@@ -42,16 +42,10 @@ class PublicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Publication $publication)
+    public function show(Publication $publication,Request $request)
     {
         $publication->load(['user']);
-        return ['publication'=>$publication];
-    }
-
-    public function showComments(Publication $publication, Request $request)
-    {
         $page_size = $request->size ?? 10;
-        $publication->load(['user']);
         $comments = $publication->comments()->paginate($page_size);
         return ['publication'=>$publication,'comments'=>$comments];
     }
