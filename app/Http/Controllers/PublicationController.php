@@ -42,12 +42,18 @@ class PublicationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Publication $publication,Request $request)
+    public function show(string  $title,Request $request)
     {
+        $formattedTitle = str_replace('_', ' ', $title);
+        $publication = Publication::where('title', $formattedTitle)->firstOrFail();
         $publication->load(['user']);
         $page_size = $request->size ?? 10;
         $comments = $publication->comments()->paginate($page_size);
-        return ['publication'=>$publication,'comments'=>$comments];
+
+        return [
+            'publication'=>$publication,
+            'comments'=>$comments
+        ];
     }
 
     /**

@@ -42,7 +42,7 @@ Route::get('/users/{user}/publications', function (User $user, Request $request)
 });
 
 Route::get('/publications', [PublicationController::class,'index']);
-Route::get('/publications/{publication}', [PublicationController::class,'show']);
+Route::get('/publications/{publication:title}', [PublicationController::class,'show']);
 
 Route::post('/publications', [PublicationController::class,'store'])->middleware("auth:sanctum");
 Route::delete('/publications/{publication}', [PublicationController::class,'destroy'])->middleware("auth:sanctum");
