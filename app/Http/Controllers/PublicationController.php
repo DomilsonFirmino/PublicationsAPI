@@ -53,7 +53,21 @@ class PublicationController extends Controller
 
         $page_size = $request->size ?? 10;
 
-        $comments = Comment::where('publication_id',$publication->id)->whereNull('comment_id')->with('comments.comments.comments.comments.comments.comments.comments.comments.comments')->paginate($page_size);
+        $comments = Comment::where('publication_id',$publication->id)
+                        ->whereNull('comment_id')
+                        ->with([
+                            'user',
+                            'comments.user',
+                            'comments.comments.user',
+                            'comments.comments.comments.user',
+                            'comments.comments.comments.comments.user',
+                            'comments.comments.comments.comments.comments.user',
+                            'comments.comments.comments.comments.comments.comments.user',
+                            'comments.comments.comments.comments.comments.comments.comments.user',
+                            'comments.comments.comments.comments.comments.comments.comments.comments.user',
+                            'comments.comments.comments.comments.comments.comments.comments.comments.user'
+                        ])
+                        ->paginate($page_size);
 
         //9 niveis de comentário
 
